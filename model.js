@@ -39,6 +39,27 @@ const Visitante = sequelize.define('Visitante', {
   timestamps: false, // ← si no usas createdAt/updatedAt
 });
 
+const Registro = sequelize.define('Registro', {
+  id_registro: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+   id_tipovisitante: {
+    type: DataTypes.INTEGER,
+  },
+  hora_ingreso: DataTypes.STRING,
+  apellidos: DataTypes.STRING,
+  genero: DataTypes.STRING,
+  telefono: DataTypes.STRING,
+  email: DataTypes.STRING,
+  motivo_visita: DataTypes.STRING,
+}, {
+  tableName: 'registro',
+  schema: 'public', // ← define el esquema aquí
+  timestamps: false, // ← si no usas createdAt/updatedAt
+});
+
 module.exports = {
     Empleado,
     Visitante
