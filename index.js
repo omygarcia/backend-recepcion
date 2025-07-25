@@ -22,10 +22,9 @@ app.get('/', async(req, res) => {
 
 });
 
-app.get('/empleado/',async(req,res)=>{
-  const empleados = await Empleado.findAll();
-  res.json(empleados);
-});
+
+app.use('/empleado',require('./routes/empleado.router'));
+
 
 app.get('/visitante/',async(req,res)=>{
   const visitantes = await Visitante.findAll();
