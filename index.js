@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const {sequelize} = require('./db');
-const {Empleado, Visitante} = require('./model');
+const {Empleado} = require('./model');
 const cors = require('cors');
 
 const app = express();
@@ -24,13 +24,8 @@ app.get('/', async(req, res) => {
 
 
 app.use('/empleado',require('./routes/empleado.router'));
-
-
-app.get('/visitante/',async(req,res)=>{
-  const visitantes = await Visitante.findAll();
-  res.json(visitantes);
-});
-
+app.use('/visitante/',require('./routes/visitante.routes'));
+app.use('/registro/',require('./routes/registro.routes'));
 app.use('/auth',require('./routes/auth.routes'));
 
 app.listen(PORT, () => {
