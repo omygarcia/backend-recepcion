@@ -32,17 +32,17 @@ async function generarPDFConQR(area,res) {
   doc.moveDown();
 
   // Datos del área
-  doc.fontSize(12).text(`Nombre: ${area.nombre}`);
-  doc.text(`Responsable: ${area.responsable}`);
-  doc.text(`Edificio: ${area.edificio}`);
-  doc.text(`Salón: ${area.salon}`);
-  doc.text(`Latitud: ${area.latitud}`);
-  doc.text(`Longitud: ${area.longitud}`);
-  doc.text(`Hora de salida: ${area.hora_salida}`);
+  doc.fontSize(12).text(`Nombre: ${area?.nombre_area}`);
+  doc.text(`Responsable: ${area?.responsable}`);
+  doc.text(`Edificio: ${area?.edificio}`);
+  doc.text(`Salón: ${area?.salon}`);
+  doc.text(`Latitud: ${area?.latitud}`);
+  doc.text(`Longitud: ${area?.longitud}`);
+  doc.text(`Hora de salida: ${area?.hora_salida}`);
   doc.moveDown();
 
   // Generar QR como imagen base64
-  const qrImage = await QRCode.toDataURL(area.qrData);
+  const qrImage = await QRCode.toDataURL(area?.codigo_qr || 'PRUEBA');
 
   // Insertar QR en el PDF
   doc.image(qrImage, {
@@ -58,8 +58,8 @@ async function generarPDFConQR(area,res) {
 
 
 
-router.get('/',async(req,res)=>{
-  const areas = await Area.findAll();
+router.get('/:id',async(req,res)=>{
+  const area = await Area.findOne({where:{id_area:req.params.id}});
   generarPDFConQR(area,res);
   //res.json(areas);
 });
