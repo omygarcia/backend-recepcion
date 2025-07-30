@@ -26,7 +26,9 @@ app.get('/', async(req, res) => {
 app.use('/empleado',require('./routes/empleado.router'));
 app.use('/visitante/',require('./routes/visitante.routes'));
 app.use('/registro/',require('./routes/registro.routes'));
+app.use('/areas/',require('./routes/areas.routes'));
 app.use('/auth',require('./routes/auth.routes'));
+app.use('/reportes',require('./routes/reportes.routes'));
 
 app.listen(PORT, () => {
   console.log(`Servidor Node corriendo en http://localhost:${PORT}`);
