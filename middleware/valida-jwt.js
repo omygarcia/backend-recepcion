@@ -1,6 +1,6 @@
 const { request, response } = require('express');
 const jwt = require('jsonwebtoken');
-const { usuarioModel } = require('../models');
+const {Empleado } = require('../model');
 const fs = require('fs');
 const { dirname } = require('path');
 const path = require('path');
@@ -22,7 +22,7 @@ const validaJWT = async(req = request, res = response, next)=>{
         //const {uid} =jwt.verify(token,publicKey, { algorithms: ['RS256'] });
         const {uid} =jwt.verify(token,process.env.JWT_SECRET_KEY);
         console.log('token estru',jwt.verify(token,process.env.JWT_SECRET_KEY))
-        const usuario = await usuarioModel.findOne({_id:uid});
+        const usuario = await Empleado.findOne({where:{id_empleado:uid}});
 
         //console.log('usuario',usuario)
         //validamos si existe el usuario
@@ -34,12 +34,12 @@ const validaJWT = async(req = request, res = response, next)=>{
         }
 
         //validamos si el usuario esta activo
-        if(!usuario.estado)
+        /*if(!usuario.estado)
         {
             return res.status(401).json({
                 msg:"Token no valido - Usuario Inactivo"
             });
-        }
+        }*/
         req.usuario = usuario;
         next();
     }

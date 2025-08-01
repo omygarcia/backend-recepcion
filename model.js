@@ -74,6 +74,10 @@ const Registro = sequelize.define('Registro', {
   timestamps: false, // ← si no usas createdAt/updatedAt
 });
 
+Registro.belongsTo(Empleado,{
+  foreignKey:'id_empleado'
+});
+
 const Area = sequelize.define('Area', {
   id_area: {
     type: DataTypes.INTEGER,
