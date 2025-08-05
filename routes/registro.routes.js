@@ -13,6 +13,14 @@ router.get('/',async(req,res)=>{
   res.json(registros);
 });
 
+router.get('/usuario/:id',async(req,res)=>{
+  const registros = await Registro.findAll({
+        where:{id_empleado:req.params.id},
+        include: [{ model: Empleado }]
+    });
+  res.json(registros);
+});
+
 
 router.get('/usuario',[validaJWT],async(req,res)=>{
     const id = req.usuario.id_empleado;
