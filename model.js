@@ -12,6 +12,8 @@ const Empleado = sequelize.define('Empleado', {
   cargo: DataTypes.STRING,
   departamento: DataTypes.STRING,
   email: DataTypes.STRING,
+  rol:DataTypes.STRING,
+  password:DataTypes.STRING
 }, {
   tableName: 'empleado',
   schema: 'public', // ← define el esquema aquí
@@ -126,5 +128,6 @@ module.exports = {
     Visitante,
     Registro,
     Area,
-    Cita
+    Cita,
+    TipoVisitante
 }

@@ -29,7 +29,7 @@ router.post('/login',[
     {
         //verificar si existe el correo
         //const usuario = await usuarioModel.findOne({correo});
-        const usuario = await Empleado.findOne({email:correo});
+        const usuario = await Empleado.findOne({email:correo,password:password});
         if(!usuario)
         {
             return res.status(400).json({code:"400",message:"Usuario o contraseña incorrectos"})
