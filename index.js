@@ -32,4 +32,7 @@ app.use('/reportes',require('./routes/reportes.routes'));
 
 app.listen(PORT, () => {
   console.log(`Servidor Node corriendo en http://localhost:${PORT}`);
+  const fecha = new Date();
+  console.log(fecha.toString());
+
 });
