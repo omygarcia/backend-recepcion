@@ -42,7 +42,7 @@ const Visitante = sequelize.define('Visitante', {
 });
 
 const TipoVisitante = sequelize.define('TipoVisitante', {
-  id_visitante: {
+  id_tipovisitante: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,

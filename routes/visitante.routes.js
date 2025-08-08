@@ -1,12 +1,36 @@
 const { Router } = require('express');
 const { validationResult, check, body } = require('express-validator');
-const {Visitante} = require('../model');
+const {Visitante, TipoVisitante} = require('../model');
+const nodemailer = require('nodemailer');
+const QRCode = require('qrcode');
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  //secure: true, // Use `true` for port 465, `false` for all other ports
+  auth: {
+    user: process.env.USER_EMAIL,
+    pass: process.env.PASS_EMAIL,
+  },
+  //tls: {
+    // do not fail on invalid certs
+    //rejectUnauthorized: false,
+  //},
+  secureConnection: false,
+  tls: { ciphers: 'SSLv3' }
+});
 
 const router = Router();
 
 router.get('/',async(req,res)=>{
   const visitantes = await Visitante.findAll();
   res.json(visitantes);
+});
+
+
+router.get('/tipo-visitante',async(req,res)=>{
+  const tipoVisitante = await TipoVisitante.findAll();
+  res.json(tipoVisitante);
 });
 
 
@@ -45,8 +69,52 @@ router.post('/create',[
             email,
             motivo_visita
         });
+
+        console.log(visitante.id_visitante);
+
+        const qrImage = await QRCode.toDataURL(""+visitante.id_visitante+"");
+
+        const qrImageBuffer = Buffer.from(qrImage.split(",")[1], 'base64');
+
+         let html = `
+            <table style="width: 100%;text-align: center;">
+              <thead style="background-color: #1e98e4ff;color:aliceblue;">
+                  <tr>
+                      <th>
+                          <h2>Sistema Recepción UNIC S3</h2>
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>
+                          <h3>Acceso A la UNIC:</h3>
+                          <div style="margin:0 auto;background-color: aliceblue;text-align: center;font-size: 1.7rem;padding: 10px;max-width: 250px;border-radius: 0.25rem;">
+                              <img src="cid:qrimage" width="150" height="150" />
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+        `;
+
+        const info = await transporter.sendMail({
+          from: '"Sistema Recepcion UNIC" <sistemas.ayto.puebla@gmail.com>', // sender address
+          to: `${visitante.email}, `, // list of receivers
+          subject: "ALta Usuario", // Subject line
+          html: html,
+          attachments: [
+            {
+            filename: 'qr.png',
+            content: qrImageBuffer,
+            cid: 'qrimage' // el mismo ID que se usa en el HTML
+            }
+        ]
+        });
+
         return res.json({'message':'El visitante se registro con exito!','data':visitante});
     } catch (error) {
+        console.log(error);
         return res.status(500).json({'code':500,'message':error});
     }
 

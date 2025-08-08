@@ -72,7 +72,7 @@ const validaRefreshJWT = async(refresh_token = null)=>{
         const {uid} =jwt.verify(token,publicKey, { algorithms: ['RS256'] });*/
         const {uid} = jwt.verify(refreshToken,process.env.JWT_SECRET_KEY);
         //console.log('token estru',jwt.verify(token,process.env.JWT_SECRET_KEY))
-        const usuario = await usuarioModel.findOne({_id:uid});
+        const usuario = await usuarioModel.findOne({where:{id_empleado:uid}});
 
         //console.log('usuario',usuario)
         //validamos si existe el usuario
