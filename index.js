@@ -24,7 +24,7 @@ app.get('/', async(req, res) => {
 
 
 app.use('/empleado',require('./routes/empleado.router'));
-app.use('/visitante/',require('./routes/visitante.routes'));
+app.use('/visitante',require('./routes/visitante.routes'));
 app.use('/registro/',require('./routes/registro.routes'));
 app.use('/areas/',require('./routes/areas.routes'));
 app.use('/auth',require('./routes/auth.routes'));

@@ -27,6 +27,19 @@ router.get('/',async(req,res)=>{
   res.json(visitantes);
 });
 
+router.get('/show/:id',async(req,res)=>{
+    try{
+        const visitantes = await Visitante.findByPk(req.body.id_visitante);
+        return res.json(visitantes);
+    }
+    catch(error)
+    {
+        console.log(error);
+        return res.status(500).json({error});
+    }
+  
+});
+
 
 router.get('/tipo-visitante',async(req,res)=>{
   const tipoVisitante = await TipoVisitante.findAll();
