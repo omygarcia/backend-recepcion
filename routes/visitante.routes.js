@@ -41,12 +41,11 @@ router.post('/create',[
     body('apellidos').notEmpty().withMessage('El campo apellidos es requerido')
             .isLength({min:3})
             .withMessage('El campo apellidos debe contener al menos 3 caracteres'),
-    body('genero').notEmpty().withMessage('El campo genero es requerido'),
     body('telefono').notEmpty().withMessage('El campo telefono es requerido')
             .isLength({min:3})
             .withMessage('El campo telefono debe contener al menos 3 caracteres'),
     check('email','El email no tiene el formato correcto').isEmail(),
-    body('motivo_cita').notEmpty().withMessage('El campo motivo cita es requerido'),
+    body('motivo_visita').notEmpty().withMessage('El campo motivo cita es requerido'),
 ],async(req,res)=>{
     const {nombres,apellidos,genero,telefono,email,motivo_visita} = req.body;
 
