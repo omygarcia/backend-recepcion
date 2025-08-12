@@ -132,4 +132,15 @@ router.post('/create',[
 
 });
 
+router.delete('/delete/:id',async(req,res)=>{
+  const empleado = await Visitante.findOne({
+    where:{id_visitante:req.params.id}
+  });
+  await empleado.destroy();
+  res.json({
+    code:200,
+    message:"El visitante se elimino con exito!"
+  });
+});
+
 module.exports = router;
