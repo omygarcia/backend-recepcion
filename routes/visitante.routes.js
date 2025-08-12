@@ -3,6 +3,8 @@ const { validationResult, check, body } = require('express-validator');
 const {Visitante, TipoVisitante} = require('../model');
 const nodemailer = require('nodemailer');
 const QRCode = require('qrcode');
+const {Op} = require('@sequelize/core');
+
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -23,7 +25,9 @@ const transporter = nodemailer.createTransport({
 const router = Router();
 
 router.get('/',async(req,res)=>{
-  const visitantes = await Visitante.findAll();
+  const visitantes = await Visitante.findAll({
+    where:{delete:null}
+});
   res.json(visitantes);
 });
 
@@ -136,7 +140,8 @@ router.delete('/delete/:id',async(req,res)=>{
   const empleado = await Visitante.findOne({
     where:{id_visitante:req.params.id}
   });
-  await empleado.destroy();
+  empleado.delete = '1';
+  await empleado.save();
   res.json({
     code:200,
     message:"El visitante se elimino con exito!"
