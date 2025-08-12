@@ -35,6 +35,7 @@ const Visitante = sequelize.define('Visitante', {
   telefono: DataTypes.STRING,
   email: DataTypes.STRING,
   motivo_visita: DataTypes.STRING,
+  delete: DataTypes.STRING,
 }, {
   tableName: 'visitante',
   schema: 'public', // ← define el esquema aquí
