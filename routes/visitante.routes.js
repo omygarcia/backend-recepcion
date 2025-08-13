@@ -33,7 +33,8 @@ router.get('/',async(req,res)=>{
 
 router.get('/show/:id',async(req,res)=>{
     try{
-        const visitantes = await Visitante.findByPk(req.body.id_visitante);
+      //console.log(req);
+        const visitantes = await Visitante.findByPk(req.params.id);
         return res.json(visitantes);
     }
     catch(error)
