@@ -137,6 +137,54 @@ router.post('/create',[
 
 });
 
+
+
+router.put('/update',[
+    body('nombres').notEmpty().withMessage('El campo nombres es requerido')
+            .isLength({min:3})
+            .withMessage('El campo nombres debe contener al menos 3 caracteres'),
+    body('apellidos').notEmpty().withMessage('El campo apellidos es requerido')
+            .isLength({min:3})
+            .withMessage('El campo apellidos debe contener al menos 3 caracteres'),
+    body('telefono').notEmpty().withMessage('El campo telefono es requerido')
+            .isLength({min:3})
+            .withMessage('El campo telefono debe contener al menos 3 caracteres'),
+    check('email','El email no tiene el formato correcto').isEmail(),
+    body('motivo_visita').notEmpty().withMessage('El campo motivo cita es requerido'),
+],async(req,res)=>{
+    const {id_visitante,nombres,apellidos,genero,telefono,email,motivo_visita} = req.body;
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty())
+    {
+        return res.json({
+            code:'401',
+            message:'Error al formar la consulta, revise el formato de los campos',
+            errors:errors.array()
+        });
+    }
+
+    try {
+        const visitante = await Visitante.findByPk(id_visitante);
+        visitante.nombres = nombres;
+        visitante.apellidos = apellidos;
+        visitante.genero = genero;
+        visitante.telefono = telefono;
+        visitante.email = email;
+        visitante.motivo_visita = motivo_visita;
+        const res = await visitante.save();
+
+
+        console.log(visitante.id_visitante);
+        return res.json({'message':'El visitante se actualizo con exito!','data':res});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({'code':500,'message':error});
+    }
+
+});
+
+
 router.delete('/delete/:id',async(req,res)=>{
   const empleado = await Visitante.findOne({
     where:{id_visitante:req.params.id}
